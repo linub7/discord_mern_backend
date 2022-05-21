@@ -1,10 +1,6 @@
 const express = require('express');
-const { register, login, testC } = require('../controllers/auth');
-const {
-  registerSchema,
-  loginSchema,
-  verifyToken,
-} = require('../middleware/authValidation');
+const { register, login } = require('../controllers/auth');
+const { registerSchema, loginSchema } = require('../middleware/authValidation');
 const validator = require('express-joi-validation').createValidator({});
 
 const router = express.Router();

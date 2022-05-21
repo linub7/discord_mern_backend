@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 
+const {
+  Schema: {
+    Types: { ObjectId },
+  },
+} = mongoose;
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -15,6 +21,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    friends: [{ type: ObjectId, ref: 'User' }],
   },
   { timestamps: true }
 );

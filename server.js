@@ -4,7 +4,7 @@ const http = require('http');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-
+const { registerSocketServer } = require('./socketServer');
 require('dotenv').config();
 
 const app = express();
@@ -20,6 +20,8 @@ readdirSync('./routes').map((r) =>
 const PORT = process.env.PORT || 8000;
 
 const server = http.createServer(app);
+
+registerSocketServer(server);
 
 mongoose
   .connect(process.env.MONGO_URI)

@@ -7,7 +7,7 @@ const verifyTokenSocket = async (socket, next) => {
 
   try {
     const decoded = jwt.verify(token, config.JWT_SECRET);
-
+    console.log(decoded);
     socket.user = decoded;
     next();
   } catch (err) {

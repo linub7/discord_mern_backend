@@ -1,4 +1,5 @@
 const authSocket = require('./middleware/authSocket');
+const { setSocketServerInstance } = require('./serverStore');
 const disconnectHandler = require('./socketHandlers/disconnectHandler');
 const newConnectionHandler = require('./socketHandlers/newConnectionHandler');
 
@@ -9,6 +10,8 @@ const registerSocketServer = (server) => {
       methods: ['GET', 'POST'],
     },
   });
+
+  setSocketServerInstance(io);
 
   io.use((socket, next) => {
     authSocket(socket, next);

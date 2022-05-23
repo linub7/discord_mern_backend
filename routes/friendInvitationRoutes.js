@@ -1,7 +1,14 @@
 const express = require('express');
-const { postInvite } = require('../controllers/friendInvitation');
+const {
+  postInvite,
+  rejectInvite,
+  acceptInvite,
+} = require('../controllers/friendInvitation');
 const { verifyToken } = require('../middleware/authValidation');
-const { postFriendInvitationSchema } = require('../middleware/postInvitation');
+const {
+  postFriendInvitationSchema,
+  inviteDecisionSchema,
+} = require('../middleware/postInvitation');
 const validator = require('express-joi-validation').createValidator({});
 
 const router = express.Router();
@@ -11,6 +18,18 @@ router.post(
   verifyToken,
   validator.body(postFriendInvitationSchema),
   postInvite
+);
+router.post(
+  '/friend-invitation/accept',
+  verifyToken,
+  validator.body(inviteDecisionSchema),
+  acceptInvite
+);
+router.post(
+  '/friend-invitation/reject',
+  verifyToken,
+  validator.body(inviteDecisionSchema),
+  rejectInvite
 );
 
 module.exports = router;

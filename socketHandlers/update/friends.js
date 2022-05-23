@@ -13,7 +13,6 @@ const updateFriendsPendingInvitations = async (userId) => {
 
     // find all active connections of specific userId
     const receiverList = getActiveConnections(userId);
-    console.log('ReceiverList: ', receiverList);
 
     const io = getSocketServerInstance();
 

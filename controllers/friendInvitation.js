@@ -64,3 +64,70 @@ exports.postInvite = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
+exports.acceptInvite = async (req, res) => {
+  try {
+    const {
+      body: { id },
+      user: { userId },
+    } = req;
+
+    const existInvitation = await FriendInvitation.exists({
+      _id: id,
+    }).populate('senderId receiverId', '_id username');
+
+    if (!existInvitation)
+      return res
+        .status(401)
+        .json({ message: 'Bad request. you have not invite from this user' });
+
+    // add to friends array
+    await User.findByIdAndUpdate(existInvitation.receiverId._id, {
+      $addToSet: { friends: existInvitation.senderId._id },
+    });
+    await User.findByIdAndUpdate(existInvitation.senderId._id, {
+      $addToSet: { friends: existInvitation.receiverId._id },
+    });
+    // remove that invitation from friend invitation collection
+    await FriendInvitation.findByIdAndDelete(id);
+
+    // update list of the friends if the users are online
+
+    // update pending invitations list
+    updateFriendsPendingInvitations(userId);
+
+    return res.status(200).send('Invitation successfully accepted');
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.rejectInvite = async (req, res) => {
+  try {
+    const {
+      body: { id },
+      user: { userId },
+    } = req;
+
+    // remove that invitation from friend invitation collection
+    const existInvitation = await FriendInvitation.exists({
+      _id: id,
+    }).populate('senderId receiverId');
+
+    if (!existInvitation)
+      return res
+        .status(401)
+        .json({ message: 'Bad request. you have not invite from this user' });
+
+    await FriendInvitation.findByIdAndDelete(id);
+
+    // update pending invitations list
+    updateFriendsPendingInvitations(userId);
+
+    return res.status(200).send('Invitation successfully rejected');
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: err.message });
+  }
+};

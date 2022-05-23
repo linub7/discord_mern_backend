@@ -2,6 +2,7 @@ const User = require('../models/User');
 const FriendInvitation = require('../models/FriendInvitation');
 const {
   updateFriendsPendingInvitations,
+  updateFriends,
 } = require('../socketHandlers/update/friends');
 
 exports.postInvite = async (req, res) => {
@@ -92,6 +93,8 @@ exports.acceptInvite = async (req, res) => {
     await FriendInvitation.findByIdAndDelete(id);
 
     // update list of the friends if the users are online
+    updateFriends(existInvitation.senderId._id.toString());
+    updateFriends(existInvitation.receiverId._id.toString());
 
     // update pending invitations list
     updateFriendsPendingInvitations(userId);

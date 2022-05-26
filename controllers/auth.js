@@ -38,6 +38,7 @@ exports.register = async (req, res) => {
         email: newUser.email,
         token,
         username: newUser.username,
+        _id: newUser._id,
       },
     });
   } catch (err) {
@@ -79,6 +80,7 @@ exports.login = async (req, res) => {
         email: user.email,
         token,
         username: user.username,
+        _id: user._id,
       },
     });
   } catch (err) {

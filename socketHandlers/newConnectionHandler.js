@@ -3,6 +3,7 @@ const {
   updateFriendsPendingInvitations,
   updateFriends,
 } = require('./update/friends');
+const { updateRooms } = require('./update/rooms');
 
 const newConnectionHandler = async (socket, io) => {
   const userDetails = socket.user;
@@ -14,6 +15,11 @@ const newConnectionHandler = async (socket, io) => {
 
   // update friends list
   updateFriends(userDetails.userId);
+
+  // update rooms => we fist want to update friends list and then rooms
+  setInterval(() => {
+    updateRooms(socket.id);
+  }, 4000);
 };
 
 module.exports = newConnectionHandler;

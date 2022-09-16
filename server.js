@@ -9,8 +9,8 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cors({ origin: 'https://amazing-cascaron-a3a70a.netlify.app' }));
 app.use(morgan('dev'));
 
 readdirSync('./routes').map((r) =>

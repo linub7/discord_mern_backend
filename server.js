@@ -10,7 +10,14 @@ require('dotenv').config();
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: 'https://amazing-cascaron-a3a70a.netlify.app' }));
+app.use(
+  cors({
+    origin: [
+      'https://amazing-cascaron-a3a70a.netlify.app',
+      'https://discord-app-lin7.herokuapp.com',
+    ],
+  })
+);
 app.use(morgan('dev'));
 
 readdirSync('./routes').map((r) =>
